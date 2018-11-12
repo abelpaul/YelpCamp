@@ -9,12 +9,12 @@ app.get("/",function(req,res){
 
 
 app.get("/campgrounds",function(req,res){
-    var campgrounds = [
+    let campgrounds = [
         {name: "Salmon Creek", image: "http://www.suttonfalls.com/communities/4/004/012/498/244//images/4628314067.jpg"},
         {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
         {name: "Yee Haw Forest", image: "https://www.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg"}
     ]
-    res.render("campgrounds")
+    res.render("campgrounds", {campgrounds:campgrounds})
 })
 
 app.listen(3000,function(){
