@@ -4,19 +4,33 @@
     
 
 <header class = "jumbotron"> 
+
+<div class="container">
+    
+
 <h2>Welcome To Yelp Campgrounds!</h2>
 <p>View our handpicked campgrounds from around the world</p>
  <p>
  <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add New Campground</a>
  </p>
+ </div>
 </header>
 
-<% campgrounds.forEach(function(campgrounds){ %>
 
-<div>
+<div class="row">
+    <% campgrounds.forEach(function(campgrounds){ %>
+
+    <div class="col-md-3 col sm-6">
+    <div class="thumbnail">
+    <img src="<%= campgrounds.image %>" alt=""> 
+    <div class="caption">
     <h4> <%= campgrounds.name %> </h4>
-    <img src="<%= campgrounds.image %>" alt="">
+    </div> 
+    </div>
+        
+    </div>
 </div>
+
 
 
 <% }); %>
