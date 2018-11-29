@@ -1,15 +1,43 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 
 let campgrounds = [
-    {name: "Salmon Creek", image: "http://www.gobroomecounty.com/files/hd/Campground1.jpg"},
     {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
-    {name: "Yee Haw Forest", image: "https://www.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg"}
+    {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
+    {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
+    {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
+    {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"},
+    {name: "Stone Mountain", image: "https://acadiamagic.com/280x187/md-campground.jpg"}
+    
 ]
 
+mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+
+
+// SCHEMA SETUP 
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String
+})
+
+var Campground = mongoose.model("Campground",campgroundSchema)
+
+// Campground.create({
+//     name: "Stone Hill", image: "https://acadiamagic.com/280x187/md-campground.jpg"
+// } , function(err, campground){
+
+//     if(err) {
+//     console.log(err);
+// }  else {
+//     console.log("NEW CAMPGROUND");
+//     console.log(campground);
+// }
+// })
 
 app.get("/",function(req,res){
     res.render("landing")
@@ -17,8 +45,15 @@ app.get("/",function(req,res){
 
 
 app.get("/campgrounds",function(req,res){
-    
-    res.render("campgrounds", {campgrounds:campgrounds})
+    Campground.find({}, function(err,allCampgrounds){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.render("campgrounds",{campgrounds:allCampgrounds})
+        }
+    })
+    // res.render("campgrounds", {campgrounds:campgrounds})
 })
 
 app.post("/campgrounds", function(req,res){
@@ -28,8 +63,14 @@ app.post("/campgrounds", function(req,res){
         name: name,
         image:image
     }
-campgrounds.push(newCampground);
-    res.redirect("/campgrounds");
+Campground.create(newCampground,function(err,newlyMade){
+    if(err) {
+        console.log(err);
+    }
+    else {
+        res.redirect("/campgrounds");
+    }
+})
 })
 
 app.get("/campgrounds/new", function(req,res) {
